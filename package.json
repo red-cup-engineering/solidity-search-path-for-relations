@@ -18,5 +18,10 @@
   },
   "dependencies": {
     "@red-cup-engineering/computer-filepath-engineering-services-section": "0.1.0"
+  },
+  "license": "MIT",
+  "funding": {
+    "type": "individual",
+    "url": "https://github.com/561-group/.github/blob/main/TIPS.md"
   }
 }
