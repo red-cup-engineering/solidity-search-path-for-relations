@@ -13,7 +13,7 @@ import, construction (`new Foo()`), deployment target, compiled artifact,
 selector reference, call/cast, or plain symbol reference.
 
 This is the Solidity parameterization of
-[`search-path-for-relations`](../../../../search-path-for-relations): it
+[`solidity-search-path-for-relations`](../../../../solidity-search-path-for-relations): it
 walks the tree with that package's language-neutral search and supplies the
 regexes that recognize each Solidity relation kind.
 
@@ -62,7 +62,7 @@ files).
 ## Use from the command line
 
 ```sh
-./scripts/search-path-for-relations.mjs <path> <solidity-function-or-symbol>
+./scripts/solidity-search-path-for-relations.mjs <path> <solidity-function-or-symbol>
 ```
 
 Prints the result as JSON. Exits with status 64 and a usage message if the
