@@ -1,0 +1,75 @@
+# solidity-search-path-for-relations
+
+<!-- 561-group-standards:badges:start -->
+[![Red Cup Engineering](https://img.shields.io/badge/561%20Group-Red%20Cup%20Engineering-c0392b)](https://github.com/red-cup-engineering)
+[![License: MIT](https://img.shields.io/badge/license-MIT-c0392b)](LICENSE)
+[![Indigenous data: CARE](https://img.shields.io/badge/Indigenous%20data-CARE-4b6f44)](https://github.com/red-cup-engineering/.github/blob/main/GOVERNANCE.md)
+[![Tips welcome](https://img.shields.io/badge/tips-welcome-d4a017)](https://github.com/561-group/.github/blob/main/TIPS.md)
+<!-- 561-group-standards:badges:end -->
+
+Find where a Solidity contract, interface, library, or function is referenced
+across a directory tree, and classify each reference by kind: declaration,
+import, construction (`new Foo()`), deployment target, compiled artifact,
+selector reference, call/cast, or plain symbol reference.
+
+This is the Solidity parameterization of
+[`solidity-search-path-for-relations`](../../../../solidity-search-path-for-relations): it
+walks the tree with that package's language-neutral search and supplies the
+regexes that recognize each Solidity relation kind.
+
+## Install
+
+```sh
+npm install
+```
+
+## Use as a library
+
+```js
+import { searchSolidityPathForRelations } from "./src/search-solidity-path-for-relations.mjs";
+
+const result = await searchSolidityPathForRelations({
+  path: "./contracts",
+  function: "Exchange",
+});
+
+console.log(result.relations);
+```
+
+`searchSolidityPathForRelations({ path, function })` returns
+
+```js
+{
+  type: "SolidityPathRelationSearch",
+  root: "/absolute/path/to/contracts",
+  function: "Exchange",
+  relations: [
+    { path: "Consumer.sol", kind: "source-import", function: "Exchange", line: 1, column: 10, excerpt: '...' },
+    { path: "Consumer.sol", kind: "construction", function: "Exchange", line: 2, column: 30, excerpt: '...' },
+    { path: "Exchange.sol", kind: "declaration", function: "Exchange", line: 1, column: 10, excerpt: '...' },
+  ],
+}
+```
+
+`path` is the directory to search. `function` is a single Solidity
+identifier (contract, interface, library, or function name); it must match
+`/^[A-Za-z_$][A-Za-z0-9_$]*$/` or the call throws.
+
+Only text-like files are scanned (`.sol`, `.js`, `.mjs`, `.ts`, `.tsx`,
+`.jsx`, `.json`, `.md`, `.py`, `.toml`, `.yaml`, `.yml`, and extensionless
+files).
+
+## Use from the command line
+
+```sh
+./scripts/solidity-search-path-for-relations.mjs <path> <solidity-function-or-symbol>
+```
+
+Prints the result as JSON. Exits with status 64 and a usage message if the
+arguments are missing.
+
+## Test
+
+```sh
+npm test
+```
